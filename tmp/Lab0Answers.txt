@@ -1,0 +1,101 @@
+Solutions to Additional Questions:
+
+Q1. Assuming the XINU text begins at address 0x0, draw a rough diagram of XINU's memory layout with addresses derived from your experimental measurements. Include the information you uncovered from running your version of printsegaddress() and printprocstks().
+
+Answer 1- XINU's memory layout-
+
+Below is the memory layout diagram of XINU, including the values received from the printsegaddress() and printprocstks() function calls.
+
+___________________________ Highest Address
+
+External data segment
+___________________________
+	variables
+	--------------
+	return address
+	--------------	   Base pointer=ffeff8
+	old base pointer
+	--------------
+	Stack values	
+___________________________Stack Pointer=ffef90
+
+	*Free space*
+
+___________________________Heap grows up
+
+	Heap
+___________________________end=0x24318
+
+Uninitialized Data Segment
+___________________________ edata=0x1e540
+
+Initialized Data Segment	
+___________________________etext=0x18f57
+	
+	Text Segment
+___________________________ Lowest address
+
+
+----------------------------------------------------------------
+
+Imp points of the layout-
+* The stack grows downwards, whereas the heap grows upwards.
+* The Text segments is obtained using etext and is the adrress past the place where the code is stored.
+* Then comes the initialized and the uninitialized data segments where the global variables are stored.
+* The stack variables are stored in the lower address of the stack followed by the return address to the caller.
+* Then the values are pushed or popped on top pf stack while it grows downward.
+* The heap grows upward with the dynamically added variables in it.
+
+------------------------------------------------------------------------------------------------------------------------
+
+Q2. What is the difference in stack top address before and after calling printtos()? Draw a diagram to illustrate what are the contents of the items pushed into the stack between these two time points.
+
+Answer 2- PFB diagram of the stack to explain the behavior of stack on calling a function.
+
+---------------------------- higher address
+Stack variables
+----------------------------
+Return Address
+---------------------------- -> ebp=base pointer
+Pushed items 1
+---------------------------- 
+Pushed item 2
+---------------------------- -> esp=top of stack(lower address)
+
+
+Explanation-
+* Suppose, there are 2 items pushed on the stack, then the register esp will hold the address of the top of the stack as shown.
+* The Return address holds the address of the caller of printtos() , i,e the main function.
+* So, before calling the printtos(), the top of stack has the value of the top of stack of the main function.
+* Once the printtos() is called, the variables and the return address to the caller are pushed.
+* In this situation, the esp pointer points to the new location which is the location having the return address.
+* Then this address is assigned to the base pointer i.e ebp=esp.
+* As we add more items on the stack, the esp pointer moves to lower addresses as shown in the figure.
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+Q3. In a stack frame, local variables are stored below the top of the stack. In task 3, does your result show all the local variables declared in your printtos function? If not, can you explain that?
+
+Answer 3- PFB diagram of the stack of my printos function-
+
+-------------------------
+return address=19f0a
+-------------------------
+ebp=ffefec
+------------------------- -> ebp= Base pointer
+esi=80
+-------------------------
+edi=80
+------------------------- -> esp=Stack pointer(top of stack)
+
+
+Explanation-
+* In my printos function, I do not pass any arguments.
+* So, there are no argument values in the stack below the return address.
+* I have pushed 2 values on top of the base pointer, i.e esi and edi register values.
+* The top of stack points to the value stored for the edi register.
+* Thus, there are only 3 values displayed below the stack top as in the output of the printos().
+
+------------------------------------------------------------------------------------------------------------------------

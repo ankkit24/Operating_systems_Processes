@@ -1,0 +1,51 @@
+#include <stdio.h>
+//#include <stdlib.h>
+
+extern char etext, edata, end;
+
+//int main(int argc, char *argv[]){
+
+void printsegaddress(){	
+	unsigned long *x=&etext;
+	unsigned long *y=&edata;
+	unsigned long *z=&end;
+
+	printf("End of text segment address  		    : 0x%lx\n", x);
+	printf("Value at the end of text segment address    : %d\n",*x);
+	printf("4-byte Hex content of the next address      : 0x%lx\n", *(++x));
+	--x;
+	printf("4-byte Hex content of the previous address  : 0x%d\n\n", *(--x));
+	//printf("\n");
+	//printf("%d\n",*x);
+	//printf("%lx\n",*y);
+	
+	printf("End of data segment address                 : 0x%lx\n", y);
+	printf("Value at the end of data segment address    : %d\n",*y);
+	printf("4-byte Hex content of the next address      : 0x%lx\n", *(++y));
+        --y;
+	printf("4-byte Hex content of the previous address  : 0x%lx\n\n", *(--y));
+	//printf("\n");
+
+        printf("End of BSS segment address                  : 0x%lx\n", z);
+	printf("Value at the end of BSS segment address     : %d\n",*z);
+	printf("4-byte Hex content of the next address      : 0x%lx\n", *(++z));
+        --z;
+	printf("4-byte Hex content of the previous address  : 0x%lx\n\n", *(--z));
+
+	//printf("    initialized data (edata)  %10p\n", &edata);
+	//printf("    uninitialized data (end)  %10p\n", &end);
+
+	//unsigned long up = 4, sum=0;
+	//printf("The hex value of 4 is: %12lx\n",up);
+	//sum = x + up;
+	
+	//printf("The addition of bits is: %lx\n",sum);
+}
+
+/*int main(int argc, char *argv[]){
+	
+	printsegaddress();	
+	exit(EXIT_SUCCESS);	               
+}*/
+
+
